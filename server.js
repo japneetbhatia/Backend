@@ -10,8 +10,11 @@ app.use(express.json()); //-> middleware function, jo bhi data get post etc hota
 
 let user = {};
 
+//crud : create read update delete
+
 //get request
 // client <- server
+//read
 app.get('/', (req, res)=> {
     res.send('Home Page');
 });
@@ -22,13 +25,14 @@ app.get('/user', (req, res) => {
 
 //post request
 // client -> server
+//create
 app.post('/user', (req, res) => {
     user = req.body;  //-> jo data post karna hota hai vo req mei atta h
     // console.log(req.body);
     res.send('data has been added suceesfully');
 });
 
-//update data
+//update 
 app.patch('/user', (req,res)=> {
     let obj = req.body;
     for(let key in obj) {
@@ -41,4 +45,12 @@ app.patch('/user', (req,res)=> {
 app.delete('/user', (req,res)=> {
     user = {};
     res.json(user);
+});
+
+
+//parameter route
+app.get('/user/:id',(req, res)=> {
+    console.log(req.params);
+    // res.send(req.params.id);
+    res.json(req.params.id);
 });
