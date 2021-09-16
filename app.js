@@ -2,7 +2,7 @@ const express = require('express');  // require express
 
 /* server creation */
 const app = express(); // express fn
-let port = '8080';
+let port = '8081';
 
 app.listen(port, function() {
     console.log(`Server is listening on port ${port} `);
@@ -27,4 +27,10 @@ app.get('/user', (req, res) => {
     // res.send(obj);
     console.log('users');
     res.json(obj);
-})
+});
+
+// showing html page
+app.get('/home', (req, res) => {
+    console.log(__dirname); //-> get full path of directory
+    res.sendFile('./views/index.html', {root:__dirname}); 
+});
