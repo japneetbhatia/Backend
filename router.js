@@ -19,9 +19,15 @@ userRouter
 .delete(deleteUser);
 
 //comment only to run 404 page
-// userRouter
-// .route('/:id')
-// .get(getUserById);
+userRouter
+.route('/:id')
+.get(getUserById);
+
+//redirect
+// previously user-all is route but if at sometime we change it to /user route so if a person add /user-all route redirect to /user route because file is same just route name is change
+app.get('/user-all', (req, res) => {
+    res.redirect('/user');
+});
 
 //404 Page
 //this app.use is middleware fn it always run
@@ -78,4 +84,3 @@ function getUserById(req,res){
     console.log(req.params);
     res.json(req.params.id);
 }
-
