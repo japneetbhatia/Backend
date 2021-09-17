@@ -1,7 +1,7 @@
 const express=require('express');
 const app=express();
-app.listen('6000',function(){
-    console.log('server listening on port 6000');
+app.listen('6001',function(){
+    console.log('server listening on port 6001');
 });
 
 app.use(express.json());
@@ -18,9 +18,17 @@ userRouter
 .patch(updateUser)
 .delete(deleteUser);
 
-userRouter
-.route('/:id')
-.get(getUserById);
+//comment only to run 404 page
+// userRouter
+// .route('/:id')
+// .get(getUserById);
+
+//404 Page
+//this app.use is middleware fn it always run
+// jab kuch na chale tabhi we want this to run so add this at last
+app.use((req, res) => {
+    res.sendFile('public/404.html', {root:__dirname})
+});
 
 let user=[];
 // client <- server
@@ -70,3 +78,4 @@ function getUserById(req,res){
     console.log(req.params);
     res.json(req.params.id);
 }
+
