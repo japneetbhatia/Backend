@@ -1,4 +1,5 @@
 const express=require('express');
+const { mongo } = require('mongoose');
 
 const app=express();
 // const router=express.Router();
@@ -97,7 +98,8 @@ function signupUser(req,res){
     // let password=userDetails.password;
 
     let{email,name,password}=req.body;
-    user.push({email,name,password});
+    // user.push({email,name,password}); 
+    // Now we learn to add data in mongoDb
     console.log('user',req.body);
     res.json({
         message:'user signedUp',
