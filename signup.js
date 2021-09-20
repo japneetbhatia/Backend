@@ -7,11 +7,12 @@ app.listen('7000',function(){
 });
 
 app.use(express.json());
-// app.use((req,res,next)=>{
-//     //do some work
-//     console.log('i am a middleware');
-//     next();
-// });
+//middleware fn
+app.use((req,res,next)=>{
+    //do some work
+    console.log('i am a middleware');
+    next(); // mera kaam ho gya proceed further if nhi lgaya toh reload hota rhega
+});
 
 app.use(express.static('public')); //-> sirf public files dekhe not full code
 const userRouter=express.Router();
@@ -21,7 +22,6 @@ app.use('/user',userRouter);
 app.use('/auth',authRouter); 
 //mounting in express
 
-
 userRouter
 .route('/')
 .get(getUser)
@@ -29,11 +29,11 @@ userRouter
 .patch(updateUser)
 .delete(deleteUser);
 
-// app.use((req,res,next)=>{
-//     //do some work
-//     console.log('i am a middleware 2nd time');
-//     next();
-// });
+app.use((req,res,next)=>{
+    //do some work
+    console.log('i am a middleware 2nd time');
+    next();
+});
 
 userRouter
 .route('/:id')
