@@ -76,16 +76,16 @@ function validateEmail(req,res){
 }
 
 
-https://classroom.pepcoding.com/index
+// https://classroom.pepcoding.com/index
 //redirects
 app.get('/user-all',(req,res)=>{
     res.redirect('/user');
 });
 
 //404 page
-app.use((req,res)=>{
-    res.sendFile('public/404.html',{root:__dirname})
-});
+// app.use((req,res)=>{
+//     res.sendFile('public/404.html',{root:__dirname})
+// });
 
 
 

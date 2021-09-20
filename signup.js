@@ -1,4 +1,3 @@
-// authentication -> 3rd party middleware
 const express=require('express');
 
 const app=express();
