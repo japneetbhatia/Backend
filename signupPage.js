@@ -2,25 +2,25 @@ const express=require('express');
 
 const app=express();
 // const router=express.Router();
-app.listen('7000',function(){
-    console.log('server listening on port 7000');
+app.listen('9000',function(){
+    console.log('server listening on port 5000');
 });
 
 app.use(express.json());
-//middleware fn
-app.use((req,res,next)=>{
-    //do some work
-    console.log('i am a middleware');
-    next(); // mera kaam ho gya proceed further if nhi lgaya toh reload hota rhega
-});
+// app.use((req,res,next)=>{
+//     //do some work
+//     console.log('i am a middleware');
+//     next();
+// });
 
-app.use(express.static('public')); //-> sirf public files dekhe not full code
+app.use(express.static('public'));
 const userRouter=express.Router();
 const authRouter=express.Router();
 
 app.use('/user',userRouter);
-app.use('/auth',authRouter); 
+app.use('/auth',authRouter);
 //mounting in express
+
 
 userRouter
 .route('/')
@@ -29,11 +29,11 @@ userRouter
 .patch(updateUser)
 .delete(deleteUser);
 
-app.use((req,res,next)=>{
-    //do some work
-    console.log('i am a middleware 2nd time');
-    next();
-});
+// app.use((req,res,next)=>{
+//     //do some work
+//     console.log('i am a middleware 2nd time');
+//     next();
+// });
 
 userRouter
 .route('/:id')
@@ -43,11 +43,10 @@ authRouter
 .route('/signup')
 .post(signupUser);
 
-//Forget Password
 authRouter
 .route('/forgetPassword')
 .get(getForgetPassword)
-.post(postForgetPassword, validateEmail);
+.post(postForgetPassword,validateEmail);
 
 function getForgetPassword(req,res){
     res.sendFile('./public/forgetPassword.html',{root:__dirname});
@@ -58,7 +57,7 @@ function postForgetPassword(req,res,next){
     console.log('data',data);
     //check if email id is correct- validate
     next();
-    // check if user exists in db
+    //check if user exists in db
     // res.json({
     //     message:"data received",
     //     data:data.email
@@ -78,18 +77,18 @@ function validateEmail(req,res){
 
 
 // https://classroom.pepcoding.com/index
-// //redirects
-// app.get('/user-all',(req,res)=>{
-//     res.redirect('/user');
-// });
+//redirects
+app.get('/user-all',(req,res)=>{
+    res.redirect('/user');
+});
 
-// //404 page
+//404 page
 // app.use((req,res)=>{
 //     res.sendFile('public/404.html',{root:__dirname})
 // });
 
 
-// signup page
+
 function signupUser(req,res){
     // let userDetails=req.body;
     // let name=userDetails.name;
@@ -148,6 +147,7 @@ function deleteUser(req,res){
 }
 //param route
 // app.get('/user/:id',getUserById);
+
 function getUserById(req,res){
     console.log(req.params);
     res.json(req.params.id);
