@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
             return validator.validate(this.email);
         }
     },
+    // createdAt : Date, //-> shorthand 
     createdAt: {
         type: Date
     },
@@ -55,7 +56,7 @@ userSchema.pre('save', function(){
 });
 
 //modal creation
-const userModal = mongoose.model('userModal', userSchema);
+const userModel = mongoose.model('userModal', userSchema);
 
 module.exports = userModel;
 
