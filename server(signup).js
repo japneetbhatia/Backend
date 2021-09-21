@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 // const router=express.Router();
 app.listen('7999', function () {
-    console.log('server listening on port 7000');
+    console.log('server listening on port 7999');
 });
 
 app.use(express.json());
@@ -102,7 +102,7 @@ function setCreatedAt(req, res, next) {
 
 
 // signup page
-const userModel = require('./modals/userModal')
+const userModel = require('./models/userModel')
 async function signupUser(req, res) {
     // let userDetails=req.body;
     // let name=userDetails.name;
@@ -125,7 +125,6 @@ async function signupUser(req, res) {
         console.log(err);
         res.json({ message: err.message })
     }
-
 }
 
 
