@@ -1,61 +1,65 @@
-const express=require('express');
-const userRouter=express.Router();
-const userModel=require('../models/userModel');
-const authRouter=express.Router();
+const express = require('express');
+const userRouter = express.Router();
+const userModel = require('../models/userModel');
+const authRouter = express.Router();
 
 //----------routes-----------
 authRouter
-.route('/signup')
-.post(setCreatedAt,signupUser);
+    .route('/signup')
+    .post(setCreatedAt, signupUser);
 
 authRouter
-.route('/forgetPassword')
-.get(getForgetPassword)
-.post(postForgetPassword,validateEmail);
+    .route('/forgetPassword')
+    .get(getForgetPassword)
+    .post(postForgetPassword, validateEmail);
+
+authRouter
+    .route('/login')
+    .post(loginUser)
 
 //---------functions----------------
 
-function setCreatedAt(req,res,next){
-    let obj=req.body;
+function setCreatedAt(req, res, next) {
+    let obj = req.body;
     //keys ka arr -> uska length
-    let length=Object.keys(obj).length;
-    if(length==0){
-        return res.status(400).json({message:"cannot create user if req.body is empty"})
+    let length = Object.keys(obj).length;
+    if (length == 0) {
+        return res.status(400).json({ message: "cannot create user if req.body is empty" })
     }
-    req.body.createdAt=new Date().toISOString();
+    req.body.createdAt = new Date().toISOString();
     next();
 }
 
-async function signupUser(req,res){
+async function signupUser(req, res) {
     // let userDetails=req.body;
     // let name=userDetails.name;
     // let email=userDetails.email;
     // let password=userDetails.password;
-    try{
-        let userObj=req.body;
+    try {
+        let userObj = req.body;
         // user.push({email,name,password});
         //put all data in mongo db
         // create document in userModel
-        let user=await userModel.create(userObj);
-        console.log('user',user);
+        let user = await userModel.create(userObj);
+        console.log('user', user);
         res.json({
-            message:'user signedUp',
-            user:userObj
+            message: 'user signedUp',
+            user: userObj
         });
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.json({message: err.message})
+        res.json({ message: err.message })
     }
 }
 
-function getForgetPassword(req,res){
-    res.sendFile('./public/forgetPassword.html',{root:__dirname});
+function getForgetPassword(req, res) {
+    res.sendFile('./public/forgetPassword.html', { root: __dirname });
 }
 
-function postForgetPassword(req,res,next){
-    let data=req.body;
-    console.log('data',data);
+function postForgetPassword(req, res, next) {
+    let data = req.body;
+    console.log('data', data);
     //check if email id is correct- validate
     next();
     //check if user exists in db
@@ -65,15 +69,48 @@ function postForgetPassword(req,res,next){
     // })
 };
 
-function validateEmail(req,res){
+function validateEmail(req, res) {
     console.log('in validateEmail function');
     console.log(req.body);
     //hw to check if email is correct or not -> @ , .
     //indexOf
-     res.json({
-            message:"data received",
-            data:req.body
-        });
+    res.json({
+        message: "data received",
+        data: req.body
+    });
 }
 
-module.exports=authRouter;
+async function loginUser(req, res) {
+    //email password
+    try {
+        if (req.body.email) {
+            let user = await userModel.findOne({ email: req.body.email });
+            if (user) {
+                if (req.body.password == user.password) {
+                    return res.json({
+                        mesage: "user loged in"
+                    });
+                } else {
+                    return res.json({
+                        message: "invalid email or password"
+                    });
+                }
+            } else {
+                return res.json({
+                    message: "invalid email or password"
+                });
+            }
+        } else {
+            return res.json({
+                message: "user not found"
+            });
+        }
+    }
+    catch (err) {
+        return res.status(500).json({
+            message: err.message
+        });
+    }
+}
+
+module.exports = authRouter;
