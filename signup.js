@@ -1,5 +1,5 @@
 const express = require('express');
-const { mongo } = require('mongoose');
+// const { mongo } = require('mongoose');
 
 const app = express();
 // const router=express.Router();
@@ -9,11 +9,11 @@ app.listen('7000', function () {
 
 app.use(express.json());
 //middleware fn
-app.use((req, res, next) => {
-    //do some work
-    console.log('i am a middleware');
-    next(); // mera kaam ho gya proceed further if nhi lgaya toh reload hota rhega
-});
+// app.use((req, res, next) => {
+//     //do some work
+//     console.log('i am a middleware');
+//     next(); // mera kaam ho gya proceed further if nhi lgaya toh reload hota rhega
+// });
 
 app.use(express.static('public')); //-> sirf public files dekhe not full code
 const userRouter = express.Router();
@@ -30,11 +30,11 @@ userRouter
     .patch(updateUser)
     .delete(deleteUser);
 
-app.use((req, res, next) => {
-    //do some work
-    console.log('i am a middleware 2nd time');
-    next();
-});
+// app.use((req, res, next) => {
+//     //do some work
+//     console.log('i am a middleware 2nd time');
+//     next();
+// });
 
 userRouter
     .route('/:id')
@@ -90,19 +90,20 @@ function validateEmail(req, res) {
 // });
 
 function setCreatedAt(req, res, next) {
-    let obj = req.body;
-    let length = Object.keys(obj).length;
-    if (length == 0) {
-        return res.status(400).json({ message: "cannot create user if req.body is empty" });
+    let obj=req.body;
+    //keys ka arr -> uska length
+    let length=Object.keys(obj).length;
+    if(length==0){
+        return res.status(400).json({message:"cannot create user if req.body is empty"})
     }
-    req.body.createdAt = new Date().toISOString();
+    req.body.createdAt=new Date().toISOString();
     next();
 }
 
 
 // signup page
 const userModel = require('./modals/userModal')
-function signupUser(req, res) {
+async function signupUser(req, res) {
     // let userDetails=req.body;
     // let name=userDetails.name;
     // let email=userDetails.email;
@@ -115,6 +116,7 @@ function signupUser(req, res) {
         let userObj = req.body;
         let user = await userModal.create(userObj);
         // console.log('user',req.body);
+        console.log('user', user);
         res.json({
             message: 'user signedUp',
             user: userObj
