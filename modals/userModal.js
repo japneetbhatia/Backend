@@ -22,9 +22,6 @@ const userSchema = new mongoose.Schema({
     age: {
         type: Number
     },
-    createdAt: {
-        type: String,
-    },
     email: {
         type: String,
         required: true,
@@ -62,15 +59,15 @@ const userModal = mongoose.model('userModal', userSchema);
 
 module.exports = userModel;
 
-(async function createUser() {
-    let user = {
-        name: 'Japneet',
-        age: 20,
-        email: 'qaz@gmail.com',
-        password: '12345678',
-        confirmPassword: '12345678'
-    };
+// (async function createUser() {
+//     let user = {
+//         name: 'Japneet',
+//         age: 20,
+//         email: 'qaz@gmail.com',
+//         password: '12345678',
+//         confirmPassword: '12345678'
+//     };
 
-    // create collection
-    console.log(userObj);
-})(); // -> made immediate invoke function
+//     // create collection
+//     console.log(userObj);
+// })(); // -> made immediate invoke function
